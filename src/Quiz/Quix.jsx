@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "../Quiz/Real.module.css";
+import styles from "../Quiz/Quix.module.css";
 import { useState } from "react";
 
-function Real() {
+function Quiz() {
   const questions = [
     {
       question: "What is the Capital of France?",
@@ -59,13 +59,11 @@ function Real() {
   const handleAns = (index, isCorrect) => {
     setAnswered(true);
     setSelectedone(index);
-    
+
     if (isCorrect) {
       setScore(score + 1);
     }
   };
-
-
 
   const handleQues = () => {
     setAnswered(false);
@@ -80,65 +78,68 @@ function Real() {
   return (
     <>
       {showscore ? (
-          <div className={styles.fscore} >
-           <h1> You Scored {score} out of {questions.length}</h1>
-          </div>
-        ) : 
-      <div className={styles.container}>
-        <div className={styles.box}>
-          <div className={styles.app}>
-            <h1>Quiz App</h1>
-          </div>
-          <div className={styles.questions}>
-            <h3>{questions[current].question}</h3>
-          </div>
-          <div className={styles.options}>
-            {questions[current].options.map((option, index) => (
+        <div className={styles.fscore}>
+          <h1>
+            {" "}
+            You Scored {score} out of {questions.length}
+          </h1>
+        </div>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.box}>
+            <div className={styles.app}>
+              <h1>Quiz App</h1>
+            </div>
+            <div className={styles.questions}>
+              <h3>{questions[current].question}</h3>
+            </div>
+            <div className={styles.options}>
+              {questions[current].options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleAns(index, option.isCorrect)}
+                  style={
+                    answered
+                      ? option.isCorrect
+                        ? {
+                            backgroundColor: "#90EE90",
+                            border: "2px solid green",
+                            color: "black",
+                          }
+                        : selectedone == index
+                        ? {
+                            backgroundColor: "#FF9C73",
+                            border: "2px solid red",
+                            color: "black",
+                          }
+                        : { color: "black" }
+                      : { color: "black" }
+                  }
+                  disabled={answered}
+                >
+                  {option.answer}
+                </button>
+              ))}
+            </div>
+            <div className={styles.next}>
               <button
-                key={index}
-                onClick={() => handleAns(index, option.isCorrect)}
-                style={
-                  answered
-                  ? option.isCorrect
-                  ? {
-                    backgroundColor: "#90EE90",
-                          border: "2px solid green",
-                          color: "black",
-                        }
-                      : selectedone == index
-                      ? {
-                          backgroundColor: "#FF9C73",
-                          border: "2px solid red",
-                          color: "black",
-                        }
-                      : { color: "black" }
-                      : { color: "black" }
-                    }
-                    disabled={answered}
-                    >
-                {option.answer}
-              </button>
-            ))}
-          </div>
-          <div className={styles.next}>
-            <button
-              onClick={handleQues}
-              disabled={!answered}
-              style={!answered ? { opacity: 0.5, cursor: "not-allowed" } : {}}
+                onClick={handleQues}
+                disabled={!answered}
+                style={!answered ? { opacity: 0.5, cursor: "not-allowed" } : {}}
               >
-              Next
-            </button>
-          </div>
-          <div className={styles.score}>
-            <p>
-              Question {current + 1}/{questions.length}
-            </p>
+                Next
+              </button>
+            </div>
+            <div className={styles.score}>
+              <p>
+                Question {current + 1}/{questions.length}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      }
+      )}
     </>
   );
 }
 
-export default Real;
+export default Quiz;
